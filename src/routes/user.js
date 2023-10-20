@@ -8,6 +8,6 @@ router.route("/:id").get(getUser)
 
 router.route("webhook").post(webHook)
 
-router.route("messaging-webhook").post(messagingWebHook)
+router.route("webhook").post(messagingWebHook)
 
 module.exports = router

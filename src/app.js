@@ -29,23 +29,6 @@ app.use("/api", publicRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/user", userRouter);
 
-//Facebook Messenger
-function verifyRequestSignature(req, res, buf) {
-  var signature = req.headers["x-hub-signature-256"];
-  if (!signature) {
-    console.warn(`Couldn't find "x-hub-signature-256" in headers.`);
-  } else {
-    var elements = signature.split("=");
-    var signatureHash = elements[1];
-    var expectedHash = crypto
-      .createHmac("sha256", config.appSecret)
-      .update(buf)
-      .digest("hex");
-    if (signatureHash != expectedHash) {
-      throw new Error("Couldn't validate the request signature.");
-    }
-  }
-}
 
 DBConnect.then((res) => {
   console.log("Database is Connected Successfully!!");

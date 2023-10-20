@@ -6,17 +6,30 @@ const {
   registerValidate,
   loginValidate,
 } = require("../middleware/authValidate");
-const { getItems, getCategories, getItem, getCategoryItems } = require("../controllers/shop");
+const {
+  getItems,
+  getCategories,
+  getItem,
+  getCategoryItems,
+} = require("../controllers/shop");
+const {
+  webHook,
+  messagingWebHook,
+} = require("../controllers/facebookMessengerBot");
 
 router.route("/").get((req, res) => {
   res.send("Hello Server");
 });
 
-router.route("/shop/items/:itemId").get(getItem)
+router.route("/webhook").post(webHook);
+
+router.route("/webhook").get(messagingWebHook);
+
+router.route("/shop/items/:itemId").get(getItem);
 
 router.route("/shop/items").get(getItems);
 
-router.route("/shop/itemsOfCategory/:categoryId").get(getCategoryItems)
+router.route("/shop/itemsOfCategory/:categoryId").get(getCategoryItems);
 
 router.route("/shop/categories").get(getCategories);
 

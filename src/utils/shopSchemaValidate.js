@@ -1,6 +1,7 @@
 const joi = require("joi");
 
 const itemSchemaValidate = joi.object({
+  admin:joi.object(),
   title: joi.string().required().messages({
     "string.base": "Title should be a string.",
     "any.required": "Title is required.",
@@ -41,6 +42,7 @@ const itemSchemaValidate = joi.object({
 });
 
 const categorySchemaValidate = joi.object({
+  admin:joi.object(),
   title: joi.string().required().messages({
     "string.base": "Title should be a string.",
     "any.required": "Title is required.",

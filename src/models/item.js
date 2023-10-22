@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 
 const ItemSchema = new Schema(
   {
+    admin: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     title: {
       type: String,
       required: [true, "Title is Required"],

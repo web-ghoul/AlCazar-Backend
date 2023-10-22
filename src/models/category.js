@@ -4,12 +4,13 @@ const { Schema } = mongoose;
 
 const CategorySchema = new Schema(
   {
+    admin: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     title: {
       type: String,
       required: [true, "Title is Required"],
     },
-    image:{
-      type:String,
+    image: {
+      type: String,
       required: [true, "Image is Required"],
     }
   },

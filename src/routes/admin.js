@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const upload = require("../middleware/multer");
-
 const {
   itemValidate,
   categoryValidate,
@@ -11,21 +10,25 @@ const {
   addNewCategory,
   deleteItem,
   updateItem,
-  deleteCategory
-} = require("../controllers/shop");
+  deleteCategory,
+  getUsers
+} = require("../controllers/dashboard");
+const { authorization, isAdmin } = require("../middleware/authorized");
+
+router.route("/users").get(authorization, isAdmin, getUsers)
 
 router
   .route("/addNewItem")
-  .post(upload.array("images"), itemValidate, addNewItem);
+  .post(authorization, isAdmin, upload.array("images"), itemValidate, addNewItem);
 
 router
   .route("/addNewCategory")
-  .post(upload.single("image"), categoryValidate, addNewCategory);
+  .post(authorization, isAdmin, upload.single("image"), categoryValidate, addNewCategory);
 
-router.route("/deleteItem/:itemId").delete(deleteItem);
+router.route("/deleteItem/:itemId").delete(authorization, isAdmin, deleteItem);
 
-router.route("/deleteCategory/:categoryId").delete(deleteCategory);
+router.route("/deleteCategory/:categoryId").delete(authorization, isAdmin, deleteCategory);
 
-router.route("/updateItem/:itemId").patch(updateItem);
+router.route("/updateItem/:itemId").patch(authorization, isAdmin, updateItem);
 
 module.exports = router;

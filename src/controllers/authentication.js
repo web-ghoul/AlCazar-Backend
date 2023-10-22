@@ -7,21 +7,20 @@ const login = async (req, res, next) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
-      res.status(404).json({ message: "User is'not Exist" });
+      res.status(404).json({ error: "User is'not Exist" });
     } else {
       const passwordMatched = await bcrypt.compare(password, user.password);
       if (passwordMatched) {
-        const token = jwt.sign({ email }, process.env.SECRET_KEY, {
+        const token = jwt.sign({ userId: user._id}, process.env.SECRET_KEY, {
           expiresIn: "1h",
         });
-        console.log(user.firstName , "logged in")
-        res.status(200).json({message:`Welcome ${user.firstName} ${user.lastName}` ,token, user });
+        res.status(200).json({ message: `Welcome ${user.firstName} ${user.lastName}`, token, user });
       } else {
-        res.status(401).json({ message: "email or password is incorrect" });
+        res.status(401).json({ error: "email or password is incorrect" });
       }
     }
   } catch (err) {
-    res.status(403).json({ message: err.message });
+    res.status(403).json({ error: err.message });
   }
 };
 
@@ -34,7 +33,7 @@ const register = async (req, res, next) => {
     } else {
       const hashedPassword = await bcrypt.hash(password, 10);
       req.body.password = hashedPassword;
-      const newUser = new User(req.body);
+      const newUser = new User({isAdmin:false,...req.body});
       await newUser.save();
       res.status(200).json({ message: "Account is created successfully!!" });
     }

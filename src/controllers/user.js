@@ -15,4 +15,18 @@ const getUser = async (req, res, next) => {
   }
 };
 
-module.exports = { getUser };
+const deleteAccount = async (req, res, next) => {
+  try {
+    console.log(req.userId)
+    const user = await User.findOne({ _id: req.userId })
+    if (user) {
+      res.status(200).json({ message: "Account is Deleted Successfully!!" });
+    } else {
+      res.status(404).json({ error: "User is not Exist" });
+    }
+  } catch (error) {
+    res.status(405).json({ error: err.message });
+  }
+}
+
+module.exports = { getUser, deleteAccount };

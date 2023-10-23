@@ -9,26 +9,36 @@ const {
   addNewItem,
   addNewCategory,
   deleteItem,
-  updateItem,
+  editItem,
   deleteCategory,
-  getUsers
+  getUsers,
+  deleteUser
 } = require("../controllers/dashboard");
 const { authorization, isAdmin } = require("../middleware/authorized");
 
-router.route("/users").get(authorization, isAdmin, getUsers)
 
+//Items
 router
   .route("/addNewItem")
   .post(authorization, isAdmin, upload.array("images"), itemValidate, addNewItem);
 
+router.route("/deleteItem/:itemId").delete(authorization, isAdmin, deleteItem);
+
+router.route("/editItem/:itemId").patch(authorization, isAdmin, editItem);
+
+
+//Categories
 router
   .route("/addNewCategory")
   .post(authorization, isAdmin, upload.single("image"), categoryValidate, addNewCategory);
 
-router.route("/deleteItem/:itemId").delete(authorization, isAdmin, deleteItem);
-
 router.route("/deleteCategory/:categoryId").delete(authorization, isAdmin, deleteCategory);
 
-router.route("/updateItem/:itemId").patch(authorization, isAdmin, updateItem);
+
+//Users
+router.route("/users").get(authorization, isAdmin, getUsers)
+
+router.route("/deleteUser/:userId").delete(authorization, isAdmin, deleteUser)
+
 
 module.exports = router;

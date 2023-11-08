@@ -26,7 +26,7 @@ const userRouter = require("./routes/user");
 app.use(helmet());
 app.use(
   cors({
-    origin: `${process.env.CLIENT_URL}`,
+    origin: "https://al-cazar-frontend.vercel.app/",
     credentials: true
   })
 );

@@ -26,7 +26,7 @@ const userRouter = require("./routes/user");
 app.use(helmet());
 app.use(
   cors({
-    origin: ["http://localhost:4500"],
+    origin: ["http://localhost:4500", "https://al-cazar.vercel.app/"],
     methods: "GET,POST,PUT,PATCH,DELETE",
     credentials: true
   })

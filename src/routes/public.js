@@ -10,7 +10,7 @@ const {
   getItems,
   getCategories,
   getItem,
-  getCategoryItems,
+  getDimensions,
 } = require("../controllers/shop");
 const {
   webHook,
@@ -31,8 +31,8 @@ router.route("/shop/items/:itemId").get(getItem);
 
 router.route("/shop/items").get(getItems);
 
-router.route("/shop/itemsOfCategory/:categoryId").get(getCategoryItems);
-
 router.route("/shop/categories").get(getCategories);
+
+router.route("/shop/dimensions").get(getDimensions);
 
 module.exports = router;

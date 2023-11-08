@@ -17,6 +17,9 @@ const authorization = async (req, res, next) => {
     if (error.message === "jwt expired") {
       msg = `${process.env.SESSION_EXPIRED_MESSAGE}`
     }
+    if (error.message === "jwt malformed") {
+      return;
+    }
     res.status(401).json({ error: msg });
   }
 }

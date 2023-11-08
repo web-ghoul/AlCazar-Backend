@@ -6,7 +6,6 @@ const uploadImage = async (file) => {
       if (result) {
         return resolve(result.secure_url);
       }
-      console.log(error.message);
       return reject({ message: error.message });
     });
   });

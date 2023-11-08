@@ -19,6 +19,7 @@ const userSchema = new Schema(
     },
     avatar: {
       type: String,
+      default: "https://res.cloudinary.com/dzajwg1m4/image/upload/v1698131822/ebtpl4jki1dpw4r4yfod.png"
     },
     email: {
       type: String,
@@ -28,7 +29,7 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Password is Required"],
       min: [8, "Must Password will be 8 Characters at least"],
-    },
+    }
   },
   { timestamps: true }
 );

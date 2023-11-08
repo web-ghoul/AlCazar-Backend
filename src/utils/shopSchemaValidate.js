@@ -1,14 +1,10 @@
 const joi = require("joi");
 
 const itemSchemaValidate = joi.object({
-  admin:joi.object(),
+  admin: joi.object(),
   title: joi.string().required().messages({
     "string.base": "Title should be a string.",
     "any.required": "Title is required.",
-  }),
-  description: joi.string().required().messages({
-    "string.base": "Description should be a string.",
-    "any.required": "Description is required.",
   }),
   price: joi.number().required().messages({
     "number.base": "Price should be a number.",
@@ -42,13 +38,13 @@ const itemSchemaValidate = joi.object({
 });
 
 const categorySchemaValidate = joi.object({
-  admin:joi.object(),
+  admin: joi.object(),
   title: joi.string().required().messages({
     "string.base": "Title should be a string.",
     "any.required": "Title is required.",
   }),
-  image: joi.object().messages({
-    "array.base": "Image should be object",
+  image: joi.array().messages({
+    "array.base": "Image should be array",
     "any.required": "Image are required.",
   }),
 });

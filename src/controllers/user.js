@@ -2,6 +2,7 @@ const User = require("../models/user");
 const Item = require("../models/item");
 const Order = require("../models/order");
 const Address = require("../models/address");
+const Subscription = require("../models/subscription");
 const uploadImage = require("../utils/uploadImage");
 require("dotenv").config();
 
@@ -11,7 +12,8 @@ const getProfile = async (req, res, next) => {
     if (user) {
       const addresses = await Address.find({ userId: req.userId })
       const orders = await Order.find({ userId: req.userId })
-      res.status(200).json({ user, addresses, orders });
+      const subscriptions = await Subscription.find({ userId: req.userId })
+      res.status(200).json({ user, addresses, orders, subscriptions });
     } else {
       res.status(404).json({ error: "User is not Exist" });
     }
@@ -131,5 +133,27 @@ const confirmOrder = async (req, res, next) => {
   }
 }
 
+const subscriptedEmail = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ _id: req.userId })
+    const { subscriptedEmail } = req.body
+    if (user) {
+      const emailIsExist = await Subscription.findOne({ email: req.body.email })
+      if (user.email === subscriptedEmail) {
+        return res.status(401).json({ error: "Your Email is Already Subscripted" });
+      }
+      if (emailIsExist) {
+        return res.status(401).json({ error: "Email is Already Subscripted" });
+      }
+      const newSubscription = new Subscription({ userId: req.userId, email: subscriptedEmail })
+      await newSubscription.save()
+      return res.status(200).json({ message: "Thanks for Subscribing!" });
+    } else {
+      res.status(404).json({ error: "User is not Exist" });
+    }
+  } catch (err) {
+    res.status(405).json({ error: err.message });
+  }
+}
 
-module.exports = { getProfile, editAddress, deleteAccount, editAccount, addNewAddress, deleteAddress, confirmOrder };
+module.exports = { getProfile, editAddress, deleteAccount, editAccount, addNewAddress, deleteAddress, confirmOrder, subscriptedEmail };

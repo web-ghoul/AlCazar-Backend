@@ -294,6 +294,50 @@ const editAddress = async (req, res, next) => {
     }
 }
 
+const deleteSubscriptedEmail = async (req, res, next) => {
+    try {
+        const { userId, subscriptedEmailId } = req.params
+        const user = await User.findOne({ _id: userId })
+        if (user) {
+            const emailIsExist = await Subscription.findOne({ _id: subscriptedEmailId })
+            if (emailIsExist) {
+                await Subscription.findOneAndDelete({ _id: subscriptedEmailId })
+                return res.status(200).json({ message: "Subscripted Email is Deleted Successfully!!" });
+            } else {
+                return res.status(404).json({ error: "Email is'nt Found in Subscripted Emails List" });
+            }
+        } else {
+            res.status(404).json({ error: "User is not Exist" });
+        }
+    } catch (err) {
+        res.status(405).json({ error: err.message });
+    }
+}
+
+const changeAvatar = async (req, res, next) => {
+    try {
+        const { userId } = req.params
+        const user = await User.findOne({ _id: userId })
+        if (user) {
+            if (req.files && req.files.length > 0) {
+                if (req.files[0].size > 1024 * 10240) {
+                    return res.status(402).json({ error: "Images Size is too large your limit for a image is 10MG" });
+                }
+                const avatar = await uploadImage(req.files[0]);
+                await User.findOneAndUpdate({ _id: userId }, { avatar: avatar })
+                return res.status(200).json({ message: "Avatar is Changed Successfully!!" });
+            } else {
+                res.status(404).json({ error: "Data is not founded" });
+            }
+        } else {
+            return res.status(404).json({ error: "User is not Exist" });
+        }
+    } catch (err) {
+        return res.status(405).json({ error: err.message });
+    }
+}
+
+
 //Admins
 
 const makeUserAdmin = async (req, res, next) => {
@@ -315,6 +359,8 @@ const makeUserAdmin = async (req, res, next) => {
     }
 }
 
+
+
 module.exports = {
     deleteItem,
     addNewItem,
@@ -329,5 +375,7 @@ module.exports = {
     makeUserAdmin,
     addNewAddress,
     deleteAddress,
-    editAddress
+    editAddress,
+    deleteSubscriptedEmail,
+    changeAvatar
 };

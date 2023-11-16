@@ -4,6 +4,8 @@ const Order = require("../models/order");
 const Address = require("../models/address");
 const Subscription = require("../models/subscription");
 const uploadImage = require("../utils/uploadImage");
+const { sendMail } = require("../utils/sendMail");
+const confirmSubscription = require("../mails/confirmSubscription");
 require("dotenv").config();
 
 const getProfile = async (req, res, next) => {
@@ -12,7 +14,7 @@ const getProfile = async (req, res, next) => {
     if (user) {
       const addresses = await Address.find({ userId: req.userId })
       const orders = await Order.find({ userId: req.userId })
-      const subscriptions = await Subscription.find({ userId: req.userId })
+      const subscriptions = await Subscription.find({ userId: req.userId, confirmed: true })
       res.status(200).json({ user, addresses, orders, subscriptions });
     } else {
       res.status(404).json({ error: "User is not Exist" });
@@ -138,16 +140,22 @@ const subscriptedEmail = async (req, res, next) => {
     const user = await User.findOne({ _id: req.userId })
     const { subscriptedEmail } = req.body
     if (user) {
-      const emailIsExist = await Subscription.findOne({ email: req.body.email })
       if (user.email === subscriptedEmail) {
         return res.status(401).json({ error: "Your Email is Already Subscripted" });
       }
+      const emailIsExist = await Subscription.findOne({ subscriptedEmail: subscriptedEmail })
       if (emailIsExist) {
         return res.status(401).json({ error: "Email is Already Subscripted" });
       }
-      const newSubscription = new Subscription({ userId: req.userId, email: subscriptedEmail })
+      const emailHasAccount = await User.findOne({ email: subscriptedEmail })
+      if (emailHasAccount) {
+        return res.status(401).json({ error: "Email Already has Account" });
+      }
+      const newSubscription = new Subscription({ userId: req.userId, subscriptedEmail: subscriptedEmail })
       await newSubscription.save()
-      return res.status(200).json({ message: "Thanks for Subscribing!" });
+      res.status(200).json({ message: "Thanks for Subscribing!" });
+      sendMail(subscriptedEmail, "Confirm Your Subscription💌", confirmSubscription(`${process.env.CLIENT_THANKS_FOR_SUBSCRIPTION_URL}/${newSubscription._id}`, process.env.CLIENT_URL, process.env.CLIENT_SHOP_URL, process.env.CLIENT_ABOUT_URL, process.env.CLIENT_CONTACT_URL))
+      return;
     } else {
       res.status(404).json({ error: "User is not Exist" });
     }
@@ -156,4 +164,61 @@ const subscriptedEmail = async (req, res, next) => {
   }
 }
 
-module.exports = { getProfile, editAddress, deleteAccount, editAccount, addNewAddress, deleteAddress, confirmOrder, subscriptedEmail };
+const confirmSubscriptedEmail = async (req, res, next) => {
+  try {
+    const { subscriptedEmailId } = req.params
+    const subscriptedEmailIsExist = await Subscription.findOne({ _id: subscriptedEmailId })
+    if (subscriptedEmailIsExist) {
+      await Subscription.findOneAndUpdate({ _id: subscriptedEmailId }, { confirmed: true })
+      return res.status(200).json({ message: "Subscripted Email is Confirmed Successfully!!" });
+    } else {
+      return res.status(404).json({ error: "Subscripted Email isn't Exist" });
+    }
+  } catch (err) {
+    res.status(405).json({ error: err.message });
+  }
+}
+
+const deleteSubscriptedEmail = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ _id: req.userId })
+    const { subscriptedEmailId } = req.params
+    if (user) {
+      const emailIsExist = await Subscription.findOne({ _id: subscriptedEmailId })
+      if (emailIsExist) {
+        await Subscription.findOneAndDelete({ _id: subscriptedEmailId })
+        return res.status(200).json({ message: "Subscripted Email is Deleted Successfully!!" });
+      } else {
+        return res.status(404).json({ error: "Email is'nt Found in Subscripted Emails List" });
+      }
+    } else {
+      res.status(404).json({ error: "User is not Exist" });
+    }
+  } catch (err) {
+    res.status(405).json({ error: err.message });
+  }
+}
+
+const changeAvatar = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ _id: req.userId })
+    if (user) {
+      if (req.files && req.files.length > 0) {
+        if (req.files[0].size > 1024 * 10240) {
+          return res.status(402).json({ error: "Images Size is too large your limit for a image is 10MG" });
+        }
+        const avatar = await uploadImage(req.files[0]);
+        await User.findOneAndUpdate({ _id: req.userId }, { avatar: avatar })
+        return res.status(200).json({ message: "Avatar is Changed Successfully!!" });
+      } else {
+        res.status(404).json({ error: "Data is not founded" });
+      }
+    } else {
+      return res.status(404).json({ error: "User is not Exist" });
+    }
+  } catch (err) {
+    return res.status(405).json({ error: err.message });
+  }
+}
+
+module.exports = { getProfile, editAddress, deleteAccount, editAccount, addNewAddress, deleteAddress, confirmOrder, subscriptedEmail, deleteSubscriptedEmail, confirmSubscriptedEmail, changeAvatar };

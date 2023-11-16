@@ -27,17 +27,10 @@ const ItemSchema = new Schema(
       type: Number,
       required: [true, "Count is Required"],
     },
-    width: {
-      type: Number,
-      required: [true, "Width is Required"],
-    },
-    length: {
-      type: Number,
-      required: [true, "Length is Required"],
-    },
-    height: {
-      type: Number,
-      required: [true, "Height is Required"],
+    dimensions: {
+      type: Array,
+      of: Map,
+      required: [true, "Dimensions is Required"],
     }
   },
   { timestamps: true }

@@ -19,7 +19,9 @@ const {
   makeUserAdmin,
   addNewAddress,
   deleteAddress,
-  editAddress
+  editAddress,
+  deleteSubscriptedEmail,
+  changeAvatar
 } = require("../controllers/dashboard");
 const { authorization, isAdmin } = require("../middleware/authorized");
 const { userValidate } = require("../middleware/userValidate");
@@ -59,6 +61,10 @@ router.route("/addNewAddress/:userId").post(authorization, isAdmin, addressValid
 router.route("/deleteAddress/:userId/:addressId").delete(authorization, isAdmin, deleteAddress)
 
 router.route("/editAddress/:userId/:addressId").patch(authorization, isAdmin, addressValidate, editAddress)
+
+router.route("/deleteSubscriptedEmail/:userId/:subscriptedEmailId").patch(authorization, isAdmin, deleteSubscriptedEmail)
+
+router.route("/changeAvatar/:userId").patch(authorization, isAdmin, upload.array("image"), changeAvatar)
 
 //Admins
 router.route("/addNewAdmin").patch(authorization, isAdmin, makeUserAdmin)

@@ -19,22 +19,14 @@ const itemSchemaValidate = joi.object({
     "array.base": "Images should be an array of files.",
     "any.required": "Images are required.",
   }),
-  count: joi.number().required().messages({
-    "number.base": "Count should be a number.",
-    "any.required": "Count is required.",
+  quantity: joi.number().required().messages({
+    "number.base": "Quantity should be a number.",
+    "any.required": "Quantity is required.",
   }),
-  width: joi.number().required().messages({
-    "number.base": "Width should be a number.",
-    "any.required": "Width is required.",
-  }),
-  length: joi.number().required().messages({
-    "number.base": "Length should be a number.",
-    "any.required": "Length is required.",
-  }),
-  height: joi.number().required().messages({
-    "number.base": "Height should be a number.",
-    "any.required": "Height is required.",
-  }),
+  dimensions: joi.array().required().messages({
+    "number.base": "Dimensions should be a Array.",
+    "any.required": "Dimensions is required.",
+  })
 });
 
 const categorySchemaValidate = joi.object({

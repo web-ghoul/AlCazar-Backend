@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 const upload = require("../middleware/multer");
 
-const { getProfile, deleteAddress, editAddress, deleteAccount, editAccount, addNewAddress, confirmOrder, subscriptedEmail } = require("../controllers/user")
+const { getProfile, deleteAddress, editAddress, deleteAccount, editAccount, addNewAddress, confirmOrder, subscriptedEmail, deleteSubscriptedEmail, confirmSubscriptedEmail, changeAvatar } = require("../controllers/user")
 const { authorization } = require("../middleware/authorized")
 const { userValidate } = require("../middleware/userValidate");
 const { addressValidate } = require("../middleware/addressValidate");
@@ -24,5 +24,11 @@ router.route("/editAddress/:id").patch(authorization, addressValidate, editAddre
 router.route("/confirmOrder").post(authorization, orderValidate, confirmOrder)
 
 router.route("/subscriptedEmail").post(authorization, subscriptionValidate, subscriptedEmail)
+
+router.route("/confirmSubscriptedEmail/:subscriptedEmailId").patch(confirmSubscriptedEmail)
+
+router.route("/deleteSubscriptedEmail/:subscriptedEmailId").delete(authorization, deleteSubscriptedEmail)
+
+router.route("/changeAvatar").patch(authorization, upload.array("image"), changeAvatar)
 
 module.exports = router

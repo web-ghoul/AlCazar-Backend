@@ -8,9 +8,13 @@ const SubscriptionSchema = new Schema(
             type: mongoose.ObjectId,
             required: [true, "UserId is Required"],
         },
-        email: {
+        subscriptedEmail: {
             type: String,
             required: [true, "Subscripted Email is Required"],
+        },
+        confirmed: {
+            type: Boolean,
+            default: false
         }
     },
     { timestamps: true }

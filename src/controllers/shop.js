@@ -60,10 +60,11 @@ const getDimensions = async (req, res, next) => {
     const items = await Item.find({})
     let dimensions = []
     items.map((item) => {
-      const d = "L" + item.length + " x " + "W" + item.width + " x " + "H" + item.height
-      if (!dimensions.includes(d)) {
-        dimensions.push(d)
-      }
+      item.dimensions.map((dimension, i) => {
+        if (!dimensions.includes(dimension)) {
+          dimensions.push(dimension)
+        }
+      })
     })
     res.status(200).json({ dimensions })
   } catch (err) {

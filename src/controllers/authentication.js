@@ -5,13 +5,13 @@ const jwt = require("jsonwebtoken");
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
       res.status(404).json({ error: "User is'not Exist" });
     } else {
       const passwordMatched = await bcrypt.compare(password, user.password);
       if (passwordMatched) {
-        const token = jwt.sign({ userId: user._id}, process.env.SECRET_KEY, {
+        const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
           expiresIn: "30d",
         });
         res.status(200).json({ message: `Welcome ${user.firstName} ${user.lastName}`, token, user });
@@ -27,13 +27,14 @@ const login = async (req, res, next) => {
 const register = async (req, res, next) => {
   try {
     const { password, email } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email.toLowerCase() });
     if (user) {
       return res.status(405).json({ error: "User is already Exist" });
     } else {
       const hashedPassword = await bcrypt.hash(password, 10);
       req.body.password = hashedPassword;
-      const newUser = new User({isAdmin:false,...req.body});
+      req.body.email = email.toLowerCase()
+      const newUser = new User({ isAdmin: false, ...req.body });
       await newUser.save();
       res.status(200).json({ message: "Account is created successfully!!" });
     }

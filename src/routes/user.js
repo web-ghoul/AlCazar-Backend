@@ -8,27 +8,27 @@ const { userValidate } = require("../middleware/userValidate");
 const { addressValidate } = require("../middleware/addressValidate");
 const { orderValidate } = require("../middleware/orderValidate");
 const { subscriptionValidate } = require("../middleware/subscriptionValidate");
+const { isUserExist } = require("../middleware/isUserExist");
 
-router.route("/").get(authorization, getProfile)
+router.route("/").get(authorization, isUserExist, getProfile)
 
-router.route("/editAccount").patch(authorization, upload.array("image"), userValidate, editAccount)
+router.route("/editAccount").patch(authorization, isUserExist, upload.array("image"), userValidate, editAccount)
 
-router.route("/deleteAccount").delete(authorization, deleteAccount)
+router.route("/deleteAccount").delete(authorization, isUserExist, deleteAccount)
 
-router.route("/addNewAddress").post(authorization, addressValidate, addNewAddress)
+router.route("/addNewAddress").post(authorization, isUserExist, addressValidate, addNewAddress)
 
-router.route("/deleteAddress/:id").delete(authorization, deleteAddress)
+router.route("/deleteAddress/:id").delete(authorization, isUserExist, deleteAddress)
 
-router.route("/editAddress/:id").patch(authorization, addressValidate, editAddress)
+router.route("/editAddress/:id").patch(authorization, isUserExist, addressValidate, editAddress)
 
-router.route("/confirmOrder").post(authorization, orderValidate, confirmOrder)
+router.route("/confirmOrder").post(authorization, isUserExist, orderValidate, confirmOrder)
 
-router.route("/subscriptedEmail").post(authorization, subscriptionValidate, subscriptedEmail)
+router.route("/subscriptedEmail").post(authorization, isUserExist, subscriptionValidate, subscriptedEmail)
 
-router.route("/confirmSubscriptedEmail/:subscriptedEmailId").patch(confirmSubscriptedEmail)
-
-router.route("/deleteSubscriptedEmail/:subscriptedEmailId").delete(authorization, deleteSubscriptedEmail)
+router.route("/deleteSubscriptedEmail/:subscriptedEmailId").delete(authorization, isUserExist, deleteSubscriptedEmail)
 
 router.route("/changeAvatar").patch(authorization, upload.array("image"), changeAvatar)
+
 
 module.exports = router

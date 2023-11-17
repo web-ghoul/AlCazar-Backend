@@ -66,6 +66,7 @@ router.route("/deleteSubscriptedEmail/:userId/:subscriptedEmailId").patch(author
 
 router.route("/changeAvatar/:userId").patch(authorization, isAdmin, upload.array("image"), changeAvatar)
 
+
 //Admins
 router.route("/addNewAdmin").patch(authorization, isAdmin, makeUserAdmin)
 

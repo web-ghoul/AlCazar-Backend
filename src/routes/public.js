@@ -11,11 +11,14 @@ const {
   getCategories,
   getItem,
   getDimensions,
-} = require("../controllers/shop");
+  contactWithMe,
+  confirmSubscriptedEmail
+} = require("../controllers/public");
 const {
   webHook,
   messagingWebHook,
 } = require("../controllers/facebookMessengerBot");
+const { isEmailValidAndNotFake } = require("../middleware/isEmailValidAndNotFake");
 
 //Authentication
 router.route("/login").post(loginValidate, emailValidate, login);
@@ -34,5 +37,10 @@ router.route("/shop/items").get(getItems);
 router.route("/shop/categories").get(getCategories);
 
 router.route("/shop/dimensions").get(getDimensions);
+
+//User Actions
+router.route("/contactWithMe").post(isEmailValidAndNotFake, contactWithMe)
+
+router.route("/confirmSubscriptedEmail/:subscriptedEmailId").patch(confirmSubscriptedEmail)
 
 module.exports = router;

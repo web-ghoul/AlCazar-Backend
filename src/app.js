@@ -46,7 +46,7 @@ app.use(session({
 
 //Routers
 app.get("/", (req, res) => {
-  res.send("Hello Server");
+  res.send("Hello Server Version 1");
 });
 // app.use("/api/facebook", facebookAuthRouter)
 // app.use("/api", pinterestAuthRouter)

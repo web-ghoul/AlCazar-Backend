@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { sendMail } = require("../utils/sendMail");
 const { welcomeMail } = require("../mails/welcomeMail");
+const { resetPasswordMail } = require("../mails/resetPasswordMail");
 
 const login = async (req, res, next) => {
   try {
@@ -54,12 +55,36 @@ const verify = async (req, res, next) => {
   }
 }
 
-const forgotPassword = async () => {
+const forgotPassword = async (req, res, next) => {
   try {
-
+    const { email } = req.body
+    const isUserExist = await User.findOne({ email: email })
+    if (isUserExist) {
+      sendMail(email, "Reset Your Password 🔒", resetPasswordMail(`${process.env.CLIENT_URL}/reset-password/${isUserExist._id}`))
+      res.status(200).json({ message: "Check your gmail inbox" });
+    } else {
+      res.status(404).json({ error: "User isn't Exist" });
+    }
   } catch (err) {
     res.status(403).json({ error: err.message });
   }
 }
 
-module.exports = { login, register, verify, forgotPassword };
+const resetPassword = async (req, res, next) => {
+  try {
+    const { userId } = req.params
+    const { password } = req.body
+    const isUserExist = await User.findOne({ _id: userId })
+    if (isUserExist) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      await User.findOneAndUpdate({ _id: userId }, { password: hashedPassword })
+      res.status(200).json({ message: "Password is Reset Successfully!!" });
+    } else {
+      res.status(404).json({ error: "User isn't Exist" });
+    }
+  } catch (err) {
+    res.status(403).json({ error: err.message });
+  }
+}
+
+module.exports = { login, register, verify, forgotPassword, resetPassword };

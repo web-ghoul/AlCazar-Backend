@@ -14,13 +14,15 @@ const {
     loginValidate,
 } = require("../middleware/authValidate");
 
-const { login, register, forgotPassword } = require("../controllers/authentication");
+const { login, register, forgotPassword, resetPassword } = require("../controllers/authentication");
 
 router.route("/login").post(loginValidate, emailValidate, login);
 
 router.route("/register").post(registerValidate, isEmailValidAndNotFake, emailValidate, register);
 
 router.route("/forgotPassword").post(isEmailValidAndNotFake, emailValidate, forgotPassword);
+
+router.route("/resetPassword/:userId").patch(resetPassword);
 
 router.route("/webhook").post(webHook);
 

@@ -100,7 +100,7 @@ const contactMessageContent = (name, message) => {
                                                         <table class="image_block block-1" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
                                                             <tr>
                                                                 <td class="pad" style="width:100%;">
-                                                                    <div class="alignment" align="center" style="line-height:10px"><a href="http://www.example.com/" target="_blank" style="outline:none" tabindex="-1"><img src="https://642667952b.imgdist.com/public/users/Integrators/BeeProAgency/1090480_1075856/logo_with_text.webp" style="display: block; height: auto; border: 0; max-width: 359px; width: 100%;" width="359" alt="Logo" title="Logo"></a></div>
+                                                                    <div class="alignment" align="center" style="line-height:10px"><a href=${process.env.CLIENT_URL} target="_blank" style="outline:none" tabindex="-1"><img src="https://642667952b.imgdist.com/public/users/Integrators/BeeProAgency/1090480_1075856/logo_with_text.webp" style="display: block; height: auto; border: 0; max-width: 359px; width: 100%;" width="359" alt="Logo" title="Logo"></a></div>
                                                                 </td>
                                                             </tr>
                                                         </table>

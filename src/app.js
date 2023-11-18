@@ -15,10 +15,11 @@ const session = require("express-session")
 const DBConnect = require("./DB/connection");
 
 //Routers
-const googleAuthRouter = require("./routes/googleAuth");
 // const facebookAuthRouter = require("./routes/facebookAuth");
 // const pinterestAuthRouter = require("./routes/pinterestAuth");
+const googleAuthRouter = require("./routes/googleAuth");
 const publicRouter = require("./routes/public");
+const authenticationRouter = require("./routes/authentication");
 const adminRouter = require("./routes/admin");
 const userRouter = require("./routes/user");
 
@@ -47,14 +48,15 @@ app.use(session({
 app.get("/", (req, res) => {
   res.send("Hello Server");
 });
-app.use("/auth", googleAuthRouter)
 // app.use("/api/facebook", facebookAuthRouter)
 // app.use("/api", pinterestAuthRouter)
+app.use("/auth", googleAuthRouter)
 app.use("/api", publicRouter);
+app.use("/api/auth", authenticationRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/user", userRouter);
 
-DBConnect.then((res) => {
+DBConnect.then(() => {
   console.log("Database is Connected Successfully!!");
   app.listen(port, console.log(`Server is running on Port ${port}`));
 }).catch((err) => {

@@ -4,7 +4,8 @@ const { Schema } = mongoose;
 
 const userSchema = new Schema(
   {
-    isAdmin: { type: Boolean, required: true },
+    isAdmin: { type: Boolean, required: true, default: false },
+    isVerify: { type: Boolean, required: true, default: false },
     firstName: {
       type: String,
       required: [true, "First Name is Required"],

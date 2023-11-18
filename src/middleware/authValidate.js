@@ -1,8 +1,7 @@
 const validator = require("email-validator");
-const emailExistence = require("email-existence");
 const { loginSchemaValidate, registerSchemaValidate } = require("../utils/authSchemaValidate");
 
-const emailValidate = (req,res,next) => {
+const emailValidate = (req, res, next) => {
   const { email } = req.body;
   if (validator.validate(email)) {
     next();
@@ -37,4 +36,4 @@ const registerValidate = async (req, res, next) => {
   }
 };
 
-module.exports = {emailValidate, loginValidate ,registerValidate};
+module.exports = { emailValidate, loginValidate, registerValidate };

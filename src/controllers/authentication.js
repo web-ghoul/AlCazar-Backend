@@ -1,6 +1,8 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { sendMail } = require("../utils/sendMail");
+const { welcomeMail } = require("../mails/welcomeMail");
 
 const login = async (req, res, next) => {
   try {
@@ -36,6 +38,7 @@ const register = async (req, res, next) => {
       req.body.email = email.toLowerCase()
       const newUser = new User({ isAdmin: false, ...req.body });
       await newUser.save();
+      sendMail(email, "Welcome To Our House🏡", welcomeMail())
       res.status(200).json({ message: "Account is created successfully!!" });
     }
   } catch (err) {
@@ -43,4 +46,20 @@ const register = async (req, res, next) => {
   }
 };
 
-module.exports = { login, register };
+const verify = async (req, res, next) => {
+  try {
+
+  } catch (err) {
+    res.status(403).json({ error: err.message });
+  }
+}
+
+const forgotPassword = async () => {
+  try {
+
+  } catch (err) {
+    res.status(403).json({ error: err.message });
+  }
+}
+
+module.exports = { login, register, verify, forgotPassword };

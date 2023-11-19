@@ -240,7 +240,7 @@ const editUser = async (req, res, next) => {
                 //Upload File
                 if (req.files && req.files.length > 0) {
                     if (req.files[0].size > 1024 * 10240) {
-                        res.status(402).json({ error: "Images Size is too large your limit for a image is 10MG" });
+                        return res.status(402).json({ error: "Images Size is too large your limit for a image is 10MG" });
                     }
                     const avatar = await uploadImage(req.files[0]);
                     req.body.avatar = avatar

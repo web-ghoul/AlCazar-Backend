@@ -150,7 +150,7 @@ const changeAvatar = async (req, res, next) => {
       await User.findOneAndUpdate({ _id: req.userId }, { avatar: avatar })
       return res.status(200).json({ message: "Avatar is Changed Successfully!!" });
     } else {
-      res.status(404).json({ error: "Data is not founded" });
+      res.status(404).json({ error: "Please Choose New Avatar" });
     }
   } catch (err) {
     return res.status(405).json({ error: err.message });

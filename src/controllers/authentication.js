@@ -99,19 +99,10 @@ const googleAuth = async (req, res, next) => {
       const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
         expiresIn: "30d",
       });
-      res.cookie('AlCazar_token', token, {
-        expires: expirationDate,
-        domain: "alcazarfinewood.vercel.app",
-        httpOnly: true,
-        secure: true,
-      });
+      res.cookie('AlCazar_token', token);
 
-      res.cookie('AlCazar_userId', user._id, {
-        expires: expirationDate,
-        domain: "alcazarfinewood.vercel.app",
-        httpOnly: true,
-        secure: true,
-      });
+      res.cookie('AlCazar_userId', user._id);
+
       res.redirect(`${process.env.CLIENT_URL}`)
     } else {
       const password = await bcrypt.hash(process.env.SECRET_KEY, 10);

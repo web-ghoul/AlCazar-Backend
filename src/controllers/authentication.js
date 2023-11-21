@@ -114,7 +114,7 @@ const googleAuth = async (req, res, next) => {
         domain: "alcazarfinewood.vercel.app"
       });
 
-      res.redirect(`${process.env.CLIENT_URL}/login?token=${token}?userId=${user._id}`)
+      res.redirect(`${process.env.CLIENT_URL}`)
     } else {
       const password = await bcrypt.hash(process.env.SECRET_KEY, 10);
       const avatar = req.user.photos[0].value
@@ -141,7 +141,7 @@ const googleAuth = async (req, res, next) => {
         domain: "alcazarfinewood.vercel.app"
       });
 
-      res.redirect(`${process.env.CLIENT_URL}/login?token=${token}?userId=${newUser._id}`)
+      res.redirect(`${process.env.CLIENT_URL}`)
     }
   } catch (err) {
     res.status(403).json({ error: err.message });

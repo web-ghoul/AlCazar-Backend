@@ -101,11 +101,15 @@ const googleAuth = async (req, res, next) => {
       });
       res.cookie("AlCazar_token", token, {
         expires: expirationDate,
-        domain: "alcazarfinewood.vercel.app"
+        domain: "alcazarfinewood.vercel.app",
+        httpOnly: true,
+        secure: true
       })
       res.cookie("AlCazar_userId", user._id, {
         expires: expirationDate,
-        domain: "alcazarfinewood.vercel.app"
+        domain: "alcazarfinewood.vercel.app",
+        httpOnly: true,
+        secure: true
       })
       res.redirect(`${process.env.CLIENT_URL}`)
     } else {
@@ -121,11 +125,15 @@ const googleAuth = async (req, res, next) => {
       sendMail(email, "Welcome To Our House🏡", welcomeMail())
       res.cookie("AlCazar_token", token, {
         expires: expirationDate,
-        domain: "alcazarfinewood.vercel.app"
+        domain: "alcazarfinewood.vercel.app",
+        httpOnly: true,
+        secure: true
       })
       res.cookie("AlCazar_userId", newUser._id, {
         expires: expirationDate,
-        domain: "alcazarfinewood.vercel.app"
+        domain: "alcazarfinewood.vercel.app",
+        httpOnly: true,
+        secure: true
       })
       res.redirect(`${process.env.CLIENT_URL}`)
     }

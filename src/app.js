@@ -11,12 +11,11 @@ const passport = require("passport");
 const passportSetup = require("./utils/passport")
 const session = require("express-session")
 const cookieParser = require('cookie-parser');
+
 //DB Connection
 const DBConnect = require("./DB/connection");
 
 //Routers
-// const facebookAuthRouter = require("./routes/facebookAuth");
-// const pinterestAuthRouter = require("./routes/pinterestAuth");
 const publicRouter = require("./routes/public");
 const authenticationRouter = require("./routes/authentication");
 const adminRouter = require("./routes/admin");
@@ -24,7 +23,6 @@ const userRouter = require("./routes/user");
 
 
 app.use(helmet());
-
 app.use(cookieParser());
 app.use(xss());
 app.use(express.json());
@@ -40,8 +38,8 @@ app.use(
     credentials: true
   })
 );
-// app.use(passport.initialize())
-// app.use(passport.session())
+app.use(passport.initialize())
+app.use(passport.session())
 
 
 //Routers

@@ -91,23 +91,10 @@ const googleAuth = async (req, res, next) => {
   try {
     const email = req.user.emails[0].value
     const user = await User.findOne({ email })
-    const expirationDate = new Date();
-    expirationDate.setTime(
-      expirationDate.getTime() + 30 * 24 * 60 * 60 * 1000,
-    );
     if (user) {
       const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
         expiresIn: "30d",
       });
-
-      res.cookie('AlCazar_token', token, {
-        expires: expirationDate,
-      });
-
-      res.cookie('AlCazar_userId', user._id, {
-        expires: expirationDate,
-      });
-
       res.redirect(`${process.env.CLIENT_GOOGLE_AUTH_URL}/${token}/${user._id}`)
     } else {
       const password = await bcrypt.hash(process.env.SECRET_KEY, 10);
@@ -120,15 +107,6 @@ const googleAuth = async (req, res, next) => {
         expiresIn: "30d",
       });
       sendMail(email, "Welcome To Our House🏡", welcomeMail())
-
-      res.cookie('AlCazar_token', token, {
-        expires: expirationDate,
-      });
-
-      res.cookie('AlCazar_userId', newUser._id, {
-        expires: expirationDate,
-      });
-
       res.redirect(`${process.env.CLIENT_GOOGLE_AUTH_URL}/${token}/${newUser._id}`)
     }
   } catch (err) {

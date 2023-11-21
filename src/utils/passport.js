@@ -7,7 +7,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://jittery-newt-cuff-links.cyclic.app/api/auth/google/callback",
+      callbackURL: process.env.CALLBACK_GOOGLE_URL,
       scope: ["profile", "email"],
     },
     function (accessToken, refreshToken, profile, callback) {

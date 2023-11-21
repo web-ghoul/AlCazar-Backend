@@ -10,7 +10,7 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 const passportSetup = require("./utils/passport")
 const session = require("express-session")
-
+const cookieParser = require('cookie-parser');
 //DB Connection
 const DBConnect = require("./DB/connection");
 
@@ -30,7 +30,7 @@ app.use(
     credentials: true
   })
 );
-
+app.use(cookieParser());
 app.use(xss());
 app.use(express.json());
 app.use(bodyParser.json());

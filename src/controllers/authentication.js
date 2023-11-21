@@ -101,12 +101,10 @@ const googleAuth = async (req, res, next) => {
       });
       res.cookie("AlCazar_token", token, {
         secure: true,
-        sameSite: "strict",
         expires: expirationDate,
       })
       res.cookie("AlCazar_userId", user._id, {
         secure: true,
-        sameSite: "strict",
         expires: expirationDate,
       })
       res.redirect(`${process.env.CLIENT_URL}`)
@@ -123,12 +121,10 @@ const googleAuth = async (req, res, next) => {
       sendMail(email, "Welcome To Our House🏡", welcomeMail())
       res.cookie("AlCazar_token", token, {
         secure: true,
-        sameSite: "strict",
         expires: expirationDate,
       })
       res.cookie("AlCazar_userId", newUser._id, {
         secure: true,
-        sameSite: "strict",
         expires: expirationDate,
       })
       res.redirect(`${process.env.CLIENT_URL}`)

@@ -45,10 +45,8 @@ app.use(session({
 
 //Routers
 app.get("/", (req, res) => {
-  res.send("Hello Server Version 1.1");
+  res.send("Hello Server Version 1.1.1");
 });
-// app.use("/api/facebook", facebookAuthRouter)
-// app.use("/api", pinterestAuthRouter)
 app.use("/api", publicRouter);
 app.use("/api/auth", authenticationRouter);
 app.use("/api/admin", adminRouter);

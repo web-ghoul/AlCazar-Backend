@@ -102,14 +102,14 @@ const googleAuth = async (req, res, next) => {
 
       res.cookie('AlCazar_token', token, {
         expires: expirationDate,
-        sameSite: false,
+        sameSite: "lax",
         path: "/",
         domain: "alcazarfinewood.vercel.app"
       });
 
       res.cookie('AlCazar_userId', user._id, {
         expires: expirationDate,
-        sameSite: false,
+        sameSite: "lax",
         path: "/",
         domain: "alcazarfinewood.vercel.app"
       });
@@ -129,14 +129,14 @@ const googleAuth = async (req, res, next) => {
 
       res.cookie('AlCazar_token', token, {
         expires: expirationDate,
-        sameSite: false,
+        sameSite: "lax",
         path: "/",
         domain: "alcazarfinewood.vercel.app"
       });
 
       res.cookie('AlCazar_userId', newUser._id, {
         expires: expirationDate,
-        sameSite: false,
+        sameSite: "lax",
         path: "/",
         domain: "alcazarfinewood.vercel.app"
       });

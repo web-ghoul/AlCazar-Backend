@@ -26,7 +26,7 @@ const userRouter = require("./routes/user");
 app.use(helmet());
 app.use(
   cors({
-    origin: process.eventNames.CLIENT_URL,
+    origin: process.env.CLIENT_URL,
     credentials: true
   })
 );

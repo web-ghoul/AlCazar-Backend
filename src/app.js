@@ -17,7 +17,6 @@ const DBConnect = require("./DB/connection");
 //Routers
 // const facebookAuthRouter = require("./routes/facebookAuth");
 // const pinterestAuthRouter = require("./routes/pinterestAuth");
-const googleAuthRouter = require("./routes/googleAuth");
 const publicRouter = require("./routes/public");
 const authenticationRouter = require("./routes/authentication");
 const adminRouter = require("./routes/admin");
@@ -50,7 +49,6 @@ app.get("/", (req, res) => {
 });
 // app.use("/api/facebook", facebookAuthRouter)
 // app.use("/api", pinterestAuthRouter)
-app.use("/auth", googleAuthRouter)
 app.use("/api", publicRouter);
 app.use("/api/auth", authenticationRouter);
 app.use("/api/admin", adminRouter);

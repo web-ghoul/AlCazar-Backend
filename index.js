@@ -23,8 +23,8 @@ const userRouter = require("./routes/user");
 
 
 //Swagger
-const swaggerUi = require('swagger-ui-express');
-const specs = require("./swagger-config");
+// const swaggerUi = require('swagger-ui-express');
+// const specs = require("./swagger-config");
 
 app.use(helmet());
 app.use(cookieParser());
@@ -68,7 +68,7 @@ app.use("/api/user", userRouter);
 
 
 //swagger router
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 
 DBConnect.then(() => {

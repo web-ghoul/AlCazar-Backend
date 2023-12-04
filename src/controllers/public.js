@@ -31,7 +31,7 @@ const getItems = async (req, res, next) => {
           title: { $regex: search ? search : "", $options: "i" },
           category: { $regex: category ? category : "" },
         }).populate("admin").sort(sort)
-    res.status(200).json({ items });
+    res.status(200).json({ items : items.reverse() });
   } catch (err) {
     res.status(405).json({ error: err.message });
   }

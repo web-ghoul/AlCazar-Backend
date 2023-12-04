@@ -8,7 +8,7 @@ const cors = require("cors");
 const xss = require("xss-clean");
 const bodyParser = require("body-parser");
 const passport = require("passport");
-const passportSetup = require("./utils/passport")
+require("./utils/googlePassport")
 const session = require("express-session")
 const cookieParser = require('cookie-parser');
 
@@ -21,6 +21,10 @@ const authenticationRouter = require("./routes/authentication");
 const adminRouter = require("./routes/admin");
 const userRouter = require("./routes/user");
 
+
+//Swagger
+const swaggerUi = require('swagger-ui-express');
+const specs = require("./swagger-config");
 
 app.use(helmet());
 app.use(cookieParser());
@@ -43,13 +47,29 @@ app.use(passport.session())
 
 
 //Routers
-app.get("/", (req, res) => {
-  res.send("Hello Server Version 1.1.1");
+app.get("/", (req, res, next) => {
+  const treasureMap = {
+    message: "🗺️ Welcome to the AlCazar API! 🏴‍☠️",
+    clues: [
+      "🌴 Follow the path of 'api/' to start the journey.",
+      "🦜 Look out for the 'X marks the spot' at each endpoint!",
+      "⚓ More Furnitures await as you navigate the API seas!",
+    ],
+    disclaimer: "Remember, only true adventurers can unlock the secrets...",
+    documentation: "/api-docs",
+  };
+  res.status(200).json(treasureMap);
 });
+
 app.use("/api", publicRouter);
 app.use("/api/auth", authenticationRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/user", userRouter);
+
+
+//swagger router
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
 
 DBConnect.then(() => {
   console.log("Database is Connected Successfully!!");
